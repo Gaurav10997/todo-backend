@@ -12,7 +12,8 @@ const UserScehma = mongoose.Schema({
     },
     password:{
         type:String,
-    }
+        required:[true , 'User must have a password']
+    } 
 })
 
 const User = mongoose.model('User' , UserScehma) ;

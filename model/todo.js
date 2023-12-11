@@ -8,7 +8,6 @@ const TodoSchema = mongoose.Schema({
     todoName:{
         type:String,
     },
-
     tasks:[
         {
           type:mongoose.Schema.ObjectId,

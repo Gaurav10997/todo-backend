@@ -4,18 +4,23 @@ const Todo = require("./model/todo");
 const mongoose = require("mongoose");
 const User = require("./model/user");
 const Task = require("./model/task");
+const cors = require('cors');
 
 mongoose.connect(
   "mongodb+srv://todo:todo@cluster0.ivt8brg.mongodb.net/?retryWrites=true&w=majority"
 );
 
+
+
 const db = mongoose.connection;
+
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 db.once("open", () => {
   console.log("Connected to MongoDB");
 });
 
 app.use(express.json());
+app.use(cors());
 
 app.get("/", async (req, res) => {
   try {
@@ -30,6 +35,7 @@ app.get("/", async (req, res) => {
     });
   }
 });
+
 
 app.post("/register", async (req, res) => {
   try {
@@ -46,6 +52,7 @@ app.post("/register", async (req, res) => {
     });
   }
 });
+
 
 app.post("/login", async (req, res) => {
   try {
@@ -89,9 +96,9 @@ app.post("/post-task-by-todo", async (req, res) => {
   }
 });
 
-app.post("/post-todo/:userId", async (req, res) => {
+app.post("/post-todo", async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { userId } = req.body;
     const { todoName } = req.body;
     const todo = await Todo.create({
       userId,
@@ -110,12 +117,13 @@ app.post("/post-todo/:userId", async (req, res) => {
   }
 });
 
-app.get("get-all-todos/:userId", async (req, res) => {
+
+
+
+app.get("/get-all-todos/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
-    const todo = await Todo.find({ userId: userId }).populate({
-      path: "Task",
-    });
+    const todo = await Todo.find({ userId: userId }).populate('tasks')
 
     res.status(200).json({
       status: "success",
@@ -128,6 +136,7 @@ app.get("get-all-todos/:userId", async (req, res) => {
     });
   }
 });
+
 
 app.listen(200, () => {
   console.log("server Started Sucessfully");

@@ -17,11 +17,34 @@ const TaskSchema = mongoose.Schema({
         default:false,
     
     },
-    Date:{
-        type:String,
+    Date: {
+        type: String,
+        default: function() {
+            return new Date().toLocaleString();
+        },
     },
 })
 
-const Task = mongoose.model('Task' , TaskSchema);
+
+TaskSchema.pre('save', async function (next) {
+    try {
+     console.log("njdsfj");
+      if (this.userId) {
+        const Todo = mongoose.model('Todo');
+        const temp = await Todo.findOneAndUpdate(
+            { userId: this.userId , _id:this.todoId}, 
+            { $addToSet: { tasks: this._id } },
+            { new: true }
+          );
+        next();
+      } else {
+        throw new Error('User ID not provided'); 
+      }
+    } catch (err) {
+      next(new Error('Failed to update Agent with customer ID'));
+    }
+  });
+
+  const Task = mongoose.model('Task' , TaskSchema);
 
 module.exports = Task;
