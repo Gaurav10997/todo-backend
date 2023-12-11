@@ -17,6 +17,10 @@ const TaskSchema = mongoose.Schema({
         default:false,
     
     },
+    ishighlight:{
+        type:Boolean,
+        default:false
+    },
     Date: {
         type: String,
         default: function() {
@@ -25,10 +29,8 @@ const TaskSchema = mongoose.Schema({
     },
 })
 
-
 TaskSchema.pre('save', async function (next) {
     try {
-     console.log("njdsfj");
       if (this.userId) {
         const Todo = mongoose.model('Todo');
         const temp = await Todo.findOneAndUpdate(

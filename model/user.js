@@ -8,7 +8,8 @@ const UserScehma = mongoose.Schema({
     },
     email:{
         type:String,
-        required:[true , 'User must have a email address']
+        required:[true , 'User must have a email address'],
+        unique: [true, 'User is Already Registered']
     },
     password:{
         type:String,
