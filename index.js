@@ -37,6 +37,8 @@ app.get("/", async (req, res) => {
 });
 
 
+// app.delete('/')
+
 app.post("/register", async (req, res) => {
   try {
     const user = await User.create(req.body);
@@ -116,6 +118,40 @@ app.post("/post-todo", async (req, res) => {
     });
   }
 });
+
+
+app.patch("/update-todo", async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const {todoId} = req.body
+    const { todoName } = req.body;
+    const todo = await Todo.findOneAndUpdate({
+      userId,
+      _id:todoId,
+    },
+    {todoName},
+    { new: true }
+    );
+
+    if(!todo){
+      throw new Error('SomeThing went Wrong')
+    }
+
+    res.status(201).json({
+      status: "Success",
+      message: "Todo Updated successfully ",
+      todo,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: "something went wrong",
+    });
+  }
+});
+
+
+
 
 
 
