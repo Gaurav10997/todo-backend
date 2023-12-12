@@ -48,7 +48,7 @@ app.post("/register", async (req, res) => {
       user,
     });
   } catch (err) {
-    res.status(201).json({
+    res.status(400).json({
       status: "failure",
       message: err.message,
     });
@@ -150,6 +150,32 @@ app.patch("/update-todo", async (req, res) => {
   }
 });
 
+
+app.delete("/delete-todo", async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const {todoId} = req.body
+    const todo = await Todo.findOneAndDelete({
+      userId,
+      _id: todoId,
+    });
+    
+    if(!todo){
+      throw new Error('SomeThing went Wrong')
+    }
+
+    res.status(204).json({
+      status: "Success",
+      message: "Todo Updated successfully ",
+      todo,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: "something went wrong",
+    });
+  }
+});
 
 
 
