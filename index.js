@@ -50,7 +50,7 @@ app.post("/register", async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: "failure",
-      message: err.message,
+      message: err.message, 
     });
   }
 });
@@ -149,6 +149,7 @@ app.patch("/update-todo", async (req, res) => {
     });
   }
 });
+
 
 
 app.delete("/delete-todo", async (req, res) => {
