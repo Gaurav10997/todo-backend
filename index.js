@@ -22,6 +22,7 @@ db.once("open", () => {
 app.use(express.json());
 app.use(cors());
 
+
 app.get("/", async (req, res) => {
   try {
     res.status(200).json({
@@ -37,7 +38,6 @@ app.get("/", async (req, res) => {
 });
 
 
-// app.delete('/')
 
 app.post("/register", async (req, res) => {
   try {
@@ -82,6 +82,56 @@ app.post("/login", async (req, res) => {
     });
   }
 });
+
+app.patch("/update-task-by-todo/:taskId", async (req, res) => {
+  try {
+    console.log(req.body)
+    const {taskId} = req.params;
+    const updatedTask = await Task.findOneAndUpdate({
+     _id:taskId,
+    },
+      req.body,
+      {
+        new:true,lean: true
+      }
+    )
+    console.log(updatedTask)
+    res.status(200).json({
+      status:"Successfull",
+      updatedTask,
+    })
+
+  } catch (err) {
+    res.status(200).json({
+      message: "Something went wrong",
+      err: err.message,
+    });
+  }
+});
+
+app.delete('/delete-task-by-todo/:taskId',async(req,res)=>{
+  try{
+    const {taskId} = req.params;
+    console.log("jkhfhjsa")
+    const deletetask = await Task.findOneAndDelete({
+      _id:taskId,
+    })
+
+    res.status(204).json({
+      status:"success",
+      deletetask
+    })
+
+  }catch(err){
+    res.status(400).json({
+      status:"failure",
+      message:"something went very wrong"
+    })
+
+  }
+})
+
+
 
 app.post("/post-task-by-todo", async (req, res) => {
   try {
@@ -201,6 +251,6 @@ app.get("/get-all-todos/:userId", async (req, res) => {
 });
 
 
-app.listen(200, () => {
+app.listen(9090, () => {
   console.log("server Started Sucessfully");
 });
