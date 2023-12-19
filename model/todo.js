@@ -8,10 +8,16 @@ const TodoSchema = mongoose.Schema({
     todoName:{
         type:String,
     },
-    tasks:[
+    todayTasks:[
         {
           type:mongoose.Schema.ObjectId,
           ref:'Task'
+        }
+    ],
+    tomorrowTasks:[
+        {
+          type:mongoose.Schema.ObjectId,
+          ref:'TomorrowTask'
         }
     ]
 
