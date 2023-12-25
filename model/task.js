@@ -23,9 +23,7 @@ const TaskSchema = mongoose.Schema({
     },
     Date: {
         type: String,
-        default: function() {
-            return new Date().toLocaleString();
-        },
+      
     },
 })
 
