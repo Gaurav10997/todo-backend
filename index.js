@@ -181,7 +181,7 @@ app.patch("/update-todo", async (req, res) => {
     },
     {todoName},
     { new: true }
-    );
+    ).populate('tasks');
 
     if(!todo){
       throw new Error('SomeThing went Wrong')
@@ -195,7 +195,7 @@ app.patch("/update-todo", async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: "fail",
-      message: "something went wrong",
+      message: err.message,
     });
   }
 });
