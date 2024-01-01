@@ -21,6 +21,10 @@ const TaskSchema = mongoose.Schema({
         type:Boolean,
         default:false
     },
+    isToday:{
+      type:Boolean,
+      default:true,
+    },
     Date: {
         type: String,
       
